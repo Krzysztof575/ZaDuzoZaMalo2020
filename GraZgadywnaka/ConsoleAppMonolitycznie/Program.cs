@@ -16,34 +16,61 @@ namespace ConsoleAppMonolitycznie
             Console.WriteLine(wylosowana);
 #endif           
             
-            Console.WriteLine("wylosowałem liczb od 1 do 100. + \nOdgadnij ją!");
+            Console.WriteLine("Wylosowałem liczb od 1 do 100. \nOdgadnij ją!");
             #endregion
 
-            Console.Write("Podaj swoją prpozycję:");
-            //2. Człowiek proponuje wartość
-            int propozycja = int.Parse(Console.ReadLine());
+            bool odgadniete = false;
+            do//powtarzaj
+            {
+                //2. Człowiek proponuje wartość
+                Console.Write("Podaj swoją propozycję:");
+                int propozycja;
+                try
+                {
+                     propozycja = int.Parse(Console.ReadLine());
+                }
+                catch(FormatException)
+                {
+                    Console.WriteLine("Nie podano poporawnej liczby. Koniec programu");
+                    return;
+                }
+                catch(OverflowException)
+                {
+                    Console.WriteLine("Podano za dużą lczbę. Koniec programu");
+                    return;
+                }
+                catch(Exception)
+                {
+                    Console.WriteLine("Niezidntyfikowana awaria. Koniec programu");
+                    return;
+                }
+                
+                //3. Komputer ocenia propozycję człowieka
+                #region komputer ocenia
+                if (propozycja < wylosowana)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Za mało");
+                    Console.ResetColor();
+                }
+                else if (propozycja > wylosowana)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Za dużo");
+                    Console.ResetColor();
+                }
+                else // propozycja == wylosowana
+                {
+                    odgadniete = true;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Trafiałeś");
+                    Console.ResetColor();
+                }
+                #endregion
+            }
+            while (!odgadniete);// dopóki nie odgadnięto 
 
-
-            //3. Komputer ocenia propozycję człowieka
-            #region komputer ocenia
-            if (propozycja < wylosowana)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Za mało");
-                Console.ResetColor();
-            }
-            else if (propozycja > wylosowana)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Za dużo");
-                Console.ResetColor();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Trafiałeś");
-                Console.ResetColor();
-            }
+            Console.WriteLine("Koniec gry");
         }
     }
 }
